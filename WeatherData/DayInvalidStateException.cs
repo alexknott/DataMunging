@@ -6,7 +6,7 @@ namespace WeatherData
     {
         public DayInvalidStateException(string message) : base(message)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

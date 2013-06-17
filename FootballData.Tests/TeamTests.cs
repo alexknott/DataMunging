@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace FootballData.Tests
 {
@@ -14,56 +9,38 @@ namespace FootballData.Tests
         [SetUp]
         public void TestSetUp()
         {
-            _teamDefaultForTests = new Team();
-            _teamDefaultForTests.Name = "theTeamName";
-            _teamDefaultForTests.For = 10;
-            _teamDefaultForTests.Against = 100;
+            _teamDefaultForTests = new Team("theTeamName", 100, 10);
         }
 
         [Test]
         public void TeamNameIsSet()
         {
-            Team team = new Team();
-            team.Name = "theTeamName";
-            Assert.AreEqual("theTeamName", team.Name);
+            Assert.AreEqual("theTeamName", _teamDefaultForTests.Name);
         }
 
         [Test]
         public void TeamForIsSet()
         {
-            Team team = new Team();
-            team.For = 10;
-            Assert.AreEqual(10, team.For);
+            Assert.AreEqual(100, _teamDefaultForTests.For);
         }
 
         [Test]
         public void TeamAgainstIsSet()
         {
-            Team team = new Team();
-            team.Against = 100;
-            Assert.AreEqual(100, team.Against);
+            Assert.AreEqual(10, _teamDefaultForTests.Against);
         }
 
         [Test]
         public void CalaculateDifferenceReturnsDifferenceWhenForIsGreaterThanAgainst()
         {
-            Team team = new Team();
-            team.For = 20;
-            team.Against = 8;
-
-            Assert.AreEqual(12, team.Difference);
+            Assert.AreEqual(90, _teamDefaultForTests.CalculateDifference());
         }
 
         [Test]
         public void CalculateDifferenceReturnsDifferenceWhenAgainstIsGreaterThanFor()
         {
-            Team team = new Team();
-            team.For = 5;
-            team.Against = 10;
-
-            Assert.AreEqual(5, team.Difference);
+            var team = new Team("antherTeam", 5, 10);
+            Assert.AreEqual(5, team.CalculateDifference());
         }
-
-
     }
 }

@@ -8,9 +8,10 @@ using NUnit.Framework;
 namespace WeatherData.Tests
 {
     [TestFixture]
-    public class DataMungingServiceTests
+    public class WeatherDataServiceTests
     {
         private Mock<IWeatherDataProvider> _weatherDataProviderMock;
+        private IMinimumDifferenceCalculator _minimumDifferenceCalculator;
         private IList<Day> _days;
 
         [SetUp]
@@ -23,6 +24,8 @@ namespace WeatherData.Tests
             _days.Add(new Day(3, 59, 59));
             _days.Add(new Day(4, 90, 60));
             _weatherDataProviderMock.Setup(m => m.GetDays(It.IsAny<string>())).Returns(_days);
+
+            _minimumDifferenceCalculator = new MinimumDifferenceCalculator();
         }
 
 
@@ -30,8 +33,8 @@ namespace WeatherData.Tests
         [TestCase("3")]
         public void ReturnsDayNumberWithLowestTemperatureSpread(string expectedDay)
         {
-            DataMungingService dataMungingService = new DataMungingService(_weatherDataProviderMock.Object);
-            string result = dataMungingService.GetDayWithLowestTemperatureSpread("");
+            WeatherDataService weatherDataService = new WeatherDataService(_weatherDataProviderMock.Object, _minimumDifferenceCalculator);
+            string result = weatherDataService.GetDayWithLowestTemperatureSpread("");
 
             Assert.AreEqual(expectedDay, result);
         }
@@ -40,16 +43,16 @@ namespace WeatherData.Tests
         public void ThrowsExceptionWhenUnableToFindlowestTemperatureSpread()
         {
             _weatherDataProviderMock.Setup(m => m.GetDays(It.IsAny<string>())).Returns(new List<Day>());
-            DataMungingService dataMungingService = new DataMungingService(_weatherDataProviderMock.Object);
-            Assert.Throws<LowestTemperatureSpreadException>(() => dataMungingService.GetDayWithLowestTemperatureSpread(""), "Could not find the day is the lowest temperature spread");
+            WeatherDataService weatherDataService = new WeatherDataService(_weatherDataProviderMock.Object, _minimumDifferenceCalculator);
+            Assert.Throws<LowestTemperatureSpreadException>(() => weatherDataService.GetDayWithLowestTemperatureSpread(""), "Could not find the day is the lowest temperature spread");
         }
 
         [Test]
         public void ReturnsDayNumberWithLowestSpreadFromPhysicalFile()
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "weather.dat");
-            DataMungingService dataMungingService = new DataMungingService(new WeatherDataProvider(new FileSystemWrapper()));
-            string result = dataMungingService.GetDayWithLowestTemperatureSpread(path);
+            WeatherDataService weatherDataService = new WeatherDataService(new WeatherDataProvider(new FileSystemFacade()), _minimumDifferenceCalculator);
+            string result = weatherDataService.GetDayWithLowestTemperatureSpread(path);
 
             Assert.AreEqual("14", result);
 

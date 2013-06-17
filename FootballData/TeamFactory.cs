@@ -11,19 +11,19 @@ namespace FootballData
 
     public class TeamFactory : ITeamFactory
     {
-        private readonly FileSystemWrapper _fileSystemWrapper;
+        private readonly FileSystemFacade _fileSystemFacade;
 
         private readonly string _path = @"E:\users\PHAT\Documents\Visual Studio 11\Projects\DataMunging\FootballData.Tests\football.dat";
 
-        public TeamFactory(FileSystemWrapper fileSystemWrapper)
+        public TeamFactory(FileSystemFacade fileSystemFacade)
         {
-            _fileSystemWrapper = fileSystemWrapper;
+            _fileSystemFacade = fileSystemFacade;
         }
 
         public Team[] GetTeams()
         {
             List<Team> teams = new List<Team>();
-            string[] lines = _fileSystemWrapper.ReadAllLines(_path);
+            string[] lines = _fileSystemFacade.ReadAllLines(_path);
 
 
             foreach (var line in lines)
@@ -43,7 +43,7 @@ namespace FootballData
                 if (!int.TryParse(parts[8], out goalsAgainst))
                     continue;
 
-                teams.Add(new Team{ Name = name, For = goalsFor, Against = goalsAgainst});
+                teams.Add(new Team(name, goalsFor, goalsAgainst));
             }
 
             return teams.ToArray();

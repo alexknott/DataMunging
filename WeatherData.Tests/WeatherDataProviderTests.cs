@@ -9,12 +9,12 @@ namespace WeatherData.Tests
     [TestFixture]
     public class WeatherDataProviderTests
     {
-        private Mock<FileSystemWrapper> _fileSystemWrapper;
+        private Mock<FileSystemFacade> _fileSystemWrapper;
 
         [SetUp]
         public void TestSetUp()
         {
-            _fileSystemWrapper = new Mock<FileSystemWrapper>();   
+            _fileSystemWrapper = new Mock<FileSystemFacade>();   
             IList<string> rawDays = new List<string>();
             rawDays.Add("(Unofficial, Preliminary Data). Source: <a");
             rawDays.Add("href=\"http://www.erh.noaa.gov/er/box/dailystns.html\">www.erh.noaa.gov/er/box/dailystns.html</a>");

@@ -2,7 +2,7 @@
 
 namespace CommonLibrary
 {
-    public class FileSystemWrapper
+    public class FileSystemFacade
     {
         public virtual string[] ReadAllLines(string path)
         {

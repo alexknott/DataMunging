@@ -8,13 +8,13 @@ namespace FootballData.Tests
     public class TeamCollectionFactoryTests
     {
         private string[] _linesForDefaultTests;
-        private Mock<FileSystemWrapper> _fileSystemWrapperMock;
+        private Mock<FileSystemFacade> _fileSystemWrapperMock;
 
         [SetUp]
         public void TestSetUp()
         {
             _linesForDefaultTests = DummyTestCollection();
-            _fileSystemWrapperMock = new Mock<FileSystemWrapper>();
+            _fileSystemWrapperMock = new Mock<FileSystemFacade>();
             _fileSystemWrapperMock.Setup(m => m.ReadAllLines(It.IsAny<string>())).Returns(_linesForDefaultTests);
         }
 

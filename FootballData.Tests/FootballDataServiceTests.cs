@@ -21,10 +21,15 @@ namespace FootballData.Tests
             _teamFactoryMock = new Mock<ITeamFactory>();
         }
 
+        private Team GetTeamItem(string name, int gaolsFor, int goalsAgainst)
+        {
+            return new Team(name, gaolsFor, goalsAgainst);
+        }
+
         [Test]
         public void FindTeamWithLowestGoalDifferenceUsingTheRealDataFile()
         {
-            var footballDataService = new FootballDataService(new TeamFactory(new FileSystemWrapper()));
+            var footballDataService = new FootballDataService(new TeamFactory(new FileSystemFacade()));
             string teamWithLowestGoalDifference = footballDataService.FindTeamWithLowestGoalDifference();
             Assert.AreEqual("Aston_Villa", teamWithLowestGoalDifference);
         }
@@ -34,7 +39,7 @@ namespace FootballData.Tests
         public void WhenOnlyOneTeamTheTeamIsReturned()
         {
             List<Team> teams = new List<Team>();
-            teams.Add(new Team {Name = "teamA", For = 10, Against = 5});
+            teams.Add(GetTeamItem("teamA", 10, 5));
             _teamFactoryMock.Setup(m => m.GetTeams()).Returns(teams.ToArray());
 
             var footballDataService = new FootballDataService(_teamFactoryMock.Object);
@@ -47,8 +52,8 @@ namespace FootballData.Tests
         public void WhenTwoTeamsTheCorrectTeamIsReturned()
         {
             List<Team> teams = new List<Team>();
-            teams.Add(new Team { Name = "teamA", For = 10, Against = 5 });
-            teams.Add(new Team { Name = "teamB", For = 15, Against = 5 });
+            teams.Add(GetTeamItem("teamA", 10, 5 ));
+            teams.Add(GetTeamItem("teamB", 15, 5 ));
             _teamFactoryMock.Setup(m => m.GetTeams()).Returns(teams.ToArray());
 
             var footballDataService = new FootballDataService(_teamFactoryMock.Object);
@@ -61,9 +66,9 @@ namespace FootballData.Tests
         public void WhenLowestTeamComesFirstFindTeamReturnsCorrectTeam()
         {
             List<Team> teams = new List<Team>();
-            teams.Add(new Team { Name = "teamA", For = 2, Against = 1 });
-            teams.Add(new Team { Name = "teamB", For = 10, Against = 5 });
-            teams.Add(new Team { Name = "teamC", For = 15, Against = 5 });
+            teams.Add(GetTeamItem("teamA", 2, 1));
+            teams.Add(GetTeamItem("teamB", 10, 5 ));
+            teams.Add(GetTeamItem("teamC", 15, 5 ));
             _teamFactoryMock.Setup(m => m.GetTeams()).Returns(teams.ToArray());
 
             var footballDataService = new FootballDataService(_teamFactoryMock.Object);
@@ -76,9 +81,9 @@ namespace FootballData.Tests
         public void WhenLowestTeamIsLastFindTeamFindTheCorrectTeam()
         {
             List<Team> teams = new List<Team>();
-            teams.Add(new Team { Name = "teamA", For = 9, Against = 1 });
-            teams.Add(new Team { Name = "teamB", For = 2, Against = 1 });
-            teams.Add(new Team { Name = "teamC", For = 1, Against = 1 });
+            teams.Add(GetTeamItem("teamA", 9, 1 ));
+            teams.Add(GetTeamItem("teamB", 2, 1 ));
+            teams.Add(GetTeamItem("teamC", 1, 1 ));
             _teamFactoryMock.Setup(m => m.GetTeams()).Returns(teams.ToArray());
 
             var footballDataService = new FootballDataService(_teamFactoryMock.Object);
@@ -91,10 +96,10 @@ namespace FootballData.Tests
         public void WhenLowestTeamIsInTheMiddleFindTeamReturnsTheCorrectTeam()
         {
             List<Team> teams = new List<Team>();
-            teams.Add(new Team { Name = "teamA", For = 9, Against = 1 });
-            teams.Add(new Team { Name = "teamB", For = 9, Against = 2 });
-            teams.Add(new Team { Name = "teamC", For = 2, Against = 1 });
-            teams.Add(new Team { Name = "teamD", For = 7, Against = 11 });
+            teams.Add(GetTeamItem("teamA", 9, 1 ));
+            teams.Add(GetTeamItem("teamB", 9, 2 ));
+            teams.Add(GetTeamItem("teamC", 2, 1 ));
+            teams.Add(GetTeamItem("teamD", 7, 11 ));
             _teamFactoryMock.Setup(m => m.GetTeams()).Returns(teams.ToArray());
 
             var footballDataService = new FootballDataService(_teamFactoryMock.Object);

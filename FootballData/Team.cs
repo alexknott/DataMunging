@@ -1,19 +1,31 @@
 ﻿using System;
+using CommonLibrary;
 
 namespace FootballData
 {
-    public class Team
+    public class Team : IDifferenceCalculator
     {
-        public string Name { get; set; }
-        public int For { get; set; }
-        public int Against { get; set; }
+        public string Name { get; private set; }
+        public int For { get; private set; }
+        public int Against { get; private set; }
 
-        public int Difference { get { return CalculateGoalDifference(); } }
+        public Team(string name, int goalsFor, int goalsAgainst)
+        {
+            Name = name;
+            For = goalsFor;
+            Against = goalsAgainst;
+        }
 
         private int CalculateGoalDifference()
         {
-            //return For - Against;
             return Math.Abs(For - Against);
+        }
+
+        public string Id { get { return Name; }}
+        
+        public int CalculateDifference()
+        {
+            return CalculateGoalDifference();
         }
     }
 }

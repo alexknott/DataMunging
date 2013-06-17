@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataMungingServiceTests.cs" />
+    <Compile Include="WeatherDataServiceTests.cs" />
     <Compile Include="DayTests.cs" />
     <Compile Include="FindLowestTemperatureSpreadExceptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,17 +11,17 @@ namespace WeatherData
     public class WeatherDataProvider : IWeatherDataProvider
     {
         
-        private readonly FileSystemWrapper _fileSystemWrapper;
+        private readonly FileSystemFacade _fileSystemFacade;
 
-        public WeatherDataProvider(FileSystemWrapper fileSystemWrapper)
+        public WeatherDataProvider(FileSystemFacade fileSystemFacade)
         {
-            _fileSystemWrapper = fileSystemWrapper;
+            _fileSystemFacade = fileSystemFacade;
         }
 
         public virtual IEnumerable<Day> GetDays(string path)
         {
             IList<Day> days = new List<Day>();
-            var rawDayLines = _fileSystemWrapper.ReadAllLines(path);
+            var rawDayLines = _fileSystemFacade.ReadAllLines(path);
 
             //foreach (string rawDay in rawDayLines)
             int lineCount = WeatherDataFileConstants.FirstDataLine-1;
